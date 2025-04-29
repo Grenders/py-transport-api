@@ -12,16 +12,12 @@ class UserModelTests(TestCase):
         email = "test@EXAMPLE.com"
         password = "Testpass123"
         user = User.objects.create_user(
-            email=email,
-            password=password,
-            first_name="John",
-            last_name="Doe"
+            email=email, password=password, first_name="John", last_name="Doe"
         )
         self.assertEqual(user.email, "test@example.com")
         self.assertTrue(user.check_password(password))
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
-
 
     def test_create_user_no_email_raises_error(self):
         with self.assertRaisesMessage(ValueError, "The given email must be set"):
@@ -34,10 +30,7 @@ class UserModelTests(TestCase):
     def test_create_superuser(self):
         email = "super@Example.com"
         user = User.objects.create_superuser(
-            email=email,
-            password="pass",
-            first_name="A",
-            last_name="B"
+            email=email, password="pass", first_name="A", last_name="B"
         )
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
@@ -49,27 +42,26 @@ class UserModelTests(TestCase):
                 password="pass",
                 first_name="A",
                 last_name="B",
-                is_staff=False
+                is_staff=False,
             )
 
     def test_create_superuser_with_is_superuser_false_raises(self):
-        with self.assertRaisesMessage(ValueError, "Superuser must have is_superuser=True."):
+        with self.assertRaisesMessage(
+            ValueError, "Superuser must have is_superuser=True."
+        ):
             User.objects.create_superuser(
                 email="super@example.com",
                 password="pass",
                 first_name="A",
                 last_name="B",
-                is_superuser=False
+                is_superuser=False,
             )
 
 
 class PasswordResetTokenModelTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
-            email="usr@example.com",
-            password="pass",
-            first_name="A",
-            last_name="B"
+            email="usr@example.com", password="pass", first_name="A", last_name="B"
         )
 
     def test_token_and_expiry_set_on_save(self):
@@ -83,11 +75,7 @@ class PasswordResetTokenModelTests(TestCase):
         uuid.UUID(token.token, version=4)
 
         expected = timezone.now() + timedelta(hours=1)
-        self.assertAlmostEqual(
-            token.expires_at,
-            expected,
-            delta=timedelta(seconds=5)
-        )
+        self.assertAlmostEqual(token.expires_at, expected, delta=timedelta(seconds=5))
 
     def test_is_expired_returns_false_for_valid_token(self):
         token = PasswordResetToken.objects.create(user=self.user)
@@ -96,9 +84,7 @@ class PasswordResetTokenModelTests(TestCase):
     def test_is_expired_returns_true_for_expired_token(self):
         past_time = timezone.now() - timedelta(hours=2)
         token = PasswordResetToken(
-            user=self.user,
-            token=uuid.uuid4().hex,
-            expires_at=past_time
+            user=self.user, token=uuid.uuid4().hex, expires_at=past_time
         )
         token.save()
         self.assertTrue(token.is_expired())
