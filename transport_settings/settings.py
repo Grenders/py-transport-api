@@ -30,7 +30,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "default-secret-key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["py-transport-api.onrender.com"]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "py-transport-api.onrender.com").split(
+    ","
+)
+
+CSRF_TRUSTED_ORIGINS = os.environ.get(
+    "CSRF_TRUSTED_ORIGINS", "https://py-transport-api.onrender.com"
+).split(",")
 
 # Application definition
 
@@ -158,9 +164,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://py-transport-api.onrender.com",
-]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
