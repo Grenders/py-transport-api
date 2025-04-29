@@ -37,7 +37,7 @@
    ```bash
    python manage.py runserver
 
-7. Перевірте API за адресою http://localhost:8001/api/doc/swagger/#/
+7. Перевірте API за адресою http://localhost:8000/api/doc/swagger/#/
 
 ## Docker Проєкт контейнеризовано за допомогою Docker і Docker Compose. Використовуються сервіси Django і PostgreSQL.
 
